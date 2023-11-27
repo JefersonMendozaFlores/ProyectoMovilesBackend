@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.example.entidad.Salida;
 import com.example.repository.SalidaRepository;
@@ -20,8 +21,11 @@ public class SalidaServiceImp implements SalidaService{
 	}
 
 	@Override
+	@Transactional
 	public Salida insertaActualizaSalida(Salida obj) {
-		return repository.save(obj);
+		Salida e = repository.save(obj);
+		repository.actualizaStock(e.getCantidad(), e.getTipoProductoSali().getCodigoProducto());
+	    return e;
 	}
 
 	@Override

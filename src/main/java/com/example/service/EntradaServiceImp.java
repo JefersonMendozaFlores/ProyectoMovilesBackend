@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.example.entidad.Entrada;
 import com.example.repository.EntradaRepository;
@@ -20,8 +21,11 @@ public class EntradaServiceImp implements EntradaService{
 	}
 
 	@Override
+	@Transactional
 	public Entrada insertaActualizaEntrada(Entrada obj) {
-		return repository.save(obj);
+		Entrada e = repository.save(obj);
+		repository.actualizaStock(e.getCantidad(), e.getTipoProductoEntra().getCodigoProducto());
+	    return e;
 	}
 
 	@Override
